@@ -1,0 +1,6 @@
+langchain
+langchain_classic
+langchain-groq
+pandas
+streamlit
+python-dotenv
