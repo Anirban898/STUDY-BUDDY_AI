@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        DOCKER_HUB_REPO = "dataguru97/studybuddy"
+        DOCKER_HUB_REPO = "anirpat999/study-buddy-ai"
         DOCKER_HUB_CREDENTIALS_ID = "dockerhub-token"
         IMAGE_TAG = "v${BUILD_NUMBER}"
     }
@@ -34,7 +34,7 @@ pipeline {
             steps {
                 script {
                     sh """
-                    sed -i 's|image: dataguru97/studybuddy:.*|image: dataguru97/studybuddy:${IMAGE_TAG}|' manifests/deployment.yaml
+                    sed -i 's|image: anirpat999/study-buddy-ai:.*|image: anirpat999/study-buddy-ai:${IMAGE_TAG}|' manifests/deployment.yaml
                     """
                 }
             }
@@ -45,11 +45,11 @@ pipeline {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'github-token', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_PASS')]) {
                         sh '''
-                        git config user.name "data-guru0"
-                        git config user.email "gyrogodnon@gmail.com"
+                        git config user.name "Anirban898"
+                        git config user.email "pathakanirban888@gmail.com"
                         git add manifests/deployment.yaml
-                        git commit -m "Update image tag to ${IMAGE_TAG}" || echo "No changes to commit"
-                        git push https://${GIT_USER}:${GIT_PASS}@github.com/data-guru0/STUDY-BUDDY-AI.git HEAD:main
+                        git commit -m "Update image tag to ${IMAGE_TAG} [skip ci]" || echo "No changes to commit"
+                        git push https://${GIT_USER}:${GIT_PASS}@github.com/Anirban898/STUDY-BUDDY_AI.git HEAD:main
                         '''
                     }
                 }
@@ -70,9 +70,9 @@ pipeline {
         stage('Apply Kubernetes & Sync App with ArgoCD') {
             steps {
                 script {
-                    kubeconfig(credentialsId: 'kubeconfig', serverUrl: 'https://192.168.49.2:8443') {
+                    kubeconfig(credentialsId: 'config', serverUrl: 'https://192.168.49.2:8443') {
                         sh '''
-                        argocd login 34.45.193.5:31704 --username admin --password $(kubectl get secret -n argocd argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d) --insecure
+                        argocd login 136.119.128.224:31704 --username admin --password $(kubectl get secret -n argocd argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d) --insecure
                         argocd app sync study
                         '''
                     }
